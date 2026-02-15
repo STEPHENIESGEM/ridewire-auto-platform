@@ -80,7 +80,7 @@ ridewire-auto-platform/
 ├── .env.example                  # Environment template
 ├── .gitignore
 ├── package.json
-├── GEMROAD_PRODUCTS.md           # GemRoad integration docs
+├── docs/GEMROAD_PRODUCTS.md      # GemRoad integration docs
 └── README.md
 ```
 
@@ -325,9 +325,9 @@ MIT License - see LICENSE file for details
 
 ## 📞 Support
 
-- GitHub Issues: Report bugs and request features
+- GitHub Issues: Report bugs and request features (primary support channel)
 - Documentation: Full API docs available at `/api/docs`
-- Email: support@ridewire.com
+- Email: support@ridewireai.com
 
 ## 🎯 Roadmap
 
@@ -342,7 +342,7 @@ MIT License - see LICENSE file for details
 
 ## 👥 Authors
 
-**Stephenie's Gem Team**
+**RideWire Development Team**
 - Platform Architecture & AI Integration
 - Vehicle Simulation Systems
 - AR Visualization Engine
