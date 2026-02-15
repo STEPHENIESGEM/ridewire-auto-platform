@@ -161,6 +161,9 @@ Before launching RideWire Auto to production, complete this checklist:
 - [ ] Enable HTTPS/SSL on your domain
 - [ ] Set strong JWT_SECRET in production
 - [ ] Enable two-factor authentication for admin accounts
+- [ ] Implement rate limiting on API endpoints (especially payment routes)
+  - Install: `npm install express-rate-limit`
+  - Apply to payment routes to prevent abuse
 - [ ] Configure rate limiting on API endpoints
 - [ ] Set up security headers (helmet.js)
 - [ ] Enable CORS only for your domains

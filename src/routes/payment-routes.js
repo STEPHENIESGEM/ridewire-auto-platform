@@ -1,6 +1,10 @@
 /**
  * Payment Routes
  * API endpoints for Stripe payment processing
+ * 
+ * SECURITY NOTE: In production, implement rate limiting on these endpoints
+ * to prevent abuse. Consider using express-rate-limit package.
+ * Example: app.use('/api/payment', rateLimit({ windowMs: 15 * 60 * 1000, max: 100 }))
  */
 
 import express from 'express';
@@ -120,6 +124,10 @@ router.post('/checkout', async (req, res) => {
 /**
  * POST /api/payment/webhook
  * Handle Stripe webhook events
+ * 
+ * SECURITY: This endpoint is protected by Stripe signature verification,
+ * which acts as authorization. However, consider adding rate limiting
+ * for additional protection against replay attacks.
  */
 router.post('/webhook', express.raw({ type: 'application/json' }), async (req, res) => {
   try {
