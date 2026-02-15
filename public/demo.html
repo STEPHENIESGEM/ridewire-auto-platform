@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demo - RideWire Auto Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f7fafc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .demo-section {
+            background: white;
+            border-radius: 16px;
+            padding: 40px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 1.8em;
+            color: #2d3748;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+        }
+
+        .code-display {
+            background: #1a202c;
+            color: #68d391;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Courier New', monospace;
+            font-size: 1.8em;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .severity-badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.9em;
+            margin-left: 10px;
+        }
+
+        .severity-high {
+            background: #fc8181;
+            color: #742a2a;
+        }
+
+        .ai-models {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .ai-model-card {
+            background: #f7fafc;
+            border-left: 4px solid #667eea;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .model-name {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 10px;
+        }
+
+        .confidence {
+            color: #48bb78;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .diagnosis-text {
+            color: #4a5568;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .causes-list {
+            list-style: none;
+            padding-left: 0;
+        }
+
+        .causes-list li {
+            padding: 8px 0;
+            color: #2d3748;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        .causes-list li::before {
+            content: "•";
+            color: #667eea;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+
+        .consensus-section {
+            background: linear-gradient(135deg, #e0e7ff 0%, #cffafe 100%);
+            padding: 30px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+
+        .consensus-title {
+            font-size: 1.5em;
+            color: #1e40af;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .action-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .action-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .priority-badge {
+            display: inline-block;
+            padding: 6px 12px;
+            border-radius: 16px;
+            font-size: 0.85em;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .priority-1 {
+            background: #fed7d7;
+            color: #742a2a;
+        }
+
+        .priority-2 {
+            background: #feebc8;
+            color: #7c2d12;
+        }
+
+        .priority-3 {
+            background: #fefcbf;
+            color: #744210;
+        }
+
+        .action-title {
+            font-size: 1.2em;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .cost-estimate {
+            color: #48bb78;
+            font-weight: bold;
+            font-size: 1.1em;
+            margin: 10px 0;
+        }
+
+        .repair-steps {
+            margin-top: 20px;
+        }
+
+        .step-card {
+            background: white;
+            padding: 20px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            border-left: 4px solid #667eea;
+        }
+
+        .step-number {
+            background: #667eea;
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+
+        .step-title {
+            display: inline;
+            font-size: 1.2em;
+            color: #2d3748;
+            font-weight: bold;
+        }
+
+        .step-description {
+            color: #4a5568;
+            margin-top: 10px;
+            line-height: 1.6;
+        }
+
+        .cta-section {
+            text-align: center;
+            padding: 60px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            margin-top: 40px;
+        }
+
+        .cta-title {
+            font-size: 2.5em;
+            margin-bottom: 20px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 18px 40px;
+            background: white;
+            color: #667eea;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1.2em;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            margin: 0 10px;
+        }
+
+        .cta-button:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .demo-section {
+                padding: 20px;
+            }
+
+            .action-cards {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🔬 Live Diagnostic Demo</h1>
+            <p>See AI Consensus in Action - Real OBD-II Code Analysis</p>
+        </div>
+
+        <!-- Diagnostic Code Display -->
+        <div class="demo-section">
+            <div class="code-display">
+                P0300
+                <span class="severity-badge severity-high">HIGH SEVERITY</span>
+            </div>
+            <h2 class="section-title">Random/Multiple Cylinder Misfire Detected</h2>
+            <p style="font-size: 1.1em; color: #4a5568; line-height: 1.6;">
+                The Engine Control Module (ECM) has detected a random or multiple cylinder misfire condition. 
+                This means one or more cylinders are not firing properly, causing rough engine operation.
+            </p>
+        </div>
+
+        <!-- AI Analysis -->
+        <div class="demo-section">
+            <h2 class="section-title">🤖 Multi-AI Model Analysis</h2>
+            <p style="margin-bottom: 20px; color: #4a5568;">
+                RideWire Auto analyzes diagnostics using multiple AI models to provide the most accurate diagnosis:
+            </p>
+
+            <div class="ai-models">
+                <div class="ai-model-card">
+                    <div class="model-name">OpenAI GPT-4 Turbo</div>
+                    <div class="confidence">Confidence: 92%</div>
+                    <p class="diagnosis-text">
+                        P0300 indicates random misfires across multiple cylinders. Primary causes include 
+                        ignition system faults (spark plugs, coil packs), fuel delivery issues, or vacuum leaks.
+                    </p>
+                    <strong>Top Causes:</strong>
+                    <ul class="causes-list">
+                        <li>Worn or fouled spark plugs</li>
+                        <li>Failing ignition coil packs</li>
+                        <li>Vacuum leak in intake manifold</li>
+                        <li>Low fuel pressure</li>
+                    </ul>
+                </div>
+
+                <div class="ai-model-card">
+                    <div class="model-name">Anthropic Claude-3 Opus</div>
+                    <div class="confidence">Confidence: 89%</div>
+                    <p class="diagnosis-text">
+                        Multiple cylinder misfire detected. Recommend systematic approach: 1) Scan for additional 
+                        codes, 2) Inspect spark plugs and ignition system, 3) Test fuel pressure, 4) Check for vacuum leaks.
+                    </p>
+                    <strong>Top Causes:</strong>
+                    <ul class="causes-list">
+                        <li>Spark plug failure due to age/wear</li>
+                        <li>Ignition coil deterioration</li>
+                        <li>Intake manifold gasket leak</li>
+                        <li>EGR valve malfunction</li>
+                    </ul>
+                </div>
+
+                <div class="ai-model-card">
+                    <div class="model-name">Google Gemini Pro</div>
+                    <div class="confidence">Confidence: 87%</div>
+                    <p class="diagnosis-text">
+                        P0300 Random Misfire code typically stems from ignition or fuel system issues. 
+                        The randomness suggests a system-wide problem rather than individual cylinder failure.
+                    </p>
+                    <strong>Top Causes:</strong>
+                    <ul class="causes-list">
+                        <li>Old spark plugs (>100k miles)</li>
+                        <li>Weak ignition coils</li>
+                        <li>Fuel pump degradation</li>
+                        <li>Timing chain wear</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Consensus Recommendation -->
+        <div class="demo-section">
+            <h2 class="section-title">✅ AI Consensus Recommendation</h2>
+            
+            <div class="consensus-section">
+                <div class="consensus-title">All AI Models Agree On These Actions</div>
+                
+                <div class="action-cards">
+                    <div class="action-card">
+                        <div class="priority-badge priority-1">PRIORITY 1</div>
+                        <div class="action-title">Inspect & Replace Spark Plugs</div>
+                        <p style="color: #718096; margin: 10px 0;">
+                            Most common and cost-effective fix. All three AI models identified this as top cause.
+                        </p>
+                        <div class="cost-estimate">$80 - $200</div>
+                        <div style="color: #718096;">Estimated Time: 1-2 hours</div>
+                    </div>
+
+                    <div class="action-card">
+                        <div class="priority-badge priority-2">PRIORITY 2</div>
+                        <div class="action-title">Test Ignition Coil Packs</div>
+                        <p style="color: #718096; margin: 10px 0;">
+                            Second most common cause of random misfires. Replace only if testing confirms failure.
+                        </p>
+                        <div class="cost-estimate">$150 - $500</div>
+                        <div style="color: #718096;">Estimated Time: 1-3 hours</div>
+                    </div>
+
+                    <div class="action-card">
+                        <div class="priority-badge priority-3">PRIORITY 3</div>
+                        <div class="action-title">Check for Vacuum Leaks</div>
+                        <p style="color: #718096; margin: 10px 0;">
+                            Can cause similar symptoms and may coexist with other issues.
+                        </p>
+                        <div class="cost-estimate">$100 - $300</div>
+                        <div style="color: #718096;">Estimated Time: 1-2 hours</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Repair Steps -->
+        <div class="demo-section">
+            <h2 class="section-title">🔧 Step-by-Step Repair Guide</h2>
+            
+            <div class="repair-steps">
+                <div class="step-card">
+                    <span class="step-number">1</span>
+                    <span class="step-title">Initial Inspection</span>
+                    <p class="step-description">
+                        Scan for additional diagnostic codes and document all findings. 
+                        Tools: OBD-II Scanner, Notepad
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-number">2</span>
+                    <span class="step-title">Visual Inspection</span>
+                    <p class="step-description">
+                        Check for obvious issues: loose wires, cracked hoses, oil leaks on spark plug wells.
+                        Tools: Flashlight
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-number">3</span>
+                    <span class="step-title">Remove & Inspect Spark Plugs</span>
+                    <p class="step-description">
+                        Remove each spark plug and inspect for wear, fouling, or damage. Check gap with feeler gauge.
+                        Tools: Spark plug socket, Extension, Ratchet, Gap tool
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-number">4</span>
+                    <span class="step-title">Test Ignition Coils</span>
+                    <p class="step-description">
+                        Use multimeter to test each coil primary and secondary resistance. Compare to factory specs.
+                        Tools: Multimeter, Factory service manual
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-number">5</span>
+                    <span class="step-title">Replace Faulty Components</span>
+                    <p class="step-description">
+                        Install new spark plugs, coils, or gaskets as needed. Use proper torque specifications.
+                        Tools: Torque wrench, New parts, Anti-seize compound
+                    </p>
+                </div>
+
+                <div class="step-card">
+                    <span class="step-number">6</span>
+                    <span class="step-title">Clear Codes & Test Drive</span>
+                    <p class="step-description">
+                        Clear diagnostic codes, test drive vehicle, and re-scan to verify repair.
+                        Tools: OBD-II Scanner
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA Section -->
+        <div class="cta-section">
+            <h2 class="cta-title">Ready to Experience AI-Powered Diagnostics?</h2>
+            <p style="font-size: 1.3em; margin-bottom: 30px; opacity: 0.9;">
+                Get instant access to multi-AI analysis, AR visualization, and comprehensive repair guides
+            </p>
+            <a href="/pricing.html" class="cta-button">View Pricing Plans</a>
+            <a href="/" class="cta-button" style="background: transparent; border: 2px solid white; color: white;">Learn More</a>
+        </div>
+    </div>
+</body>
+</html>
