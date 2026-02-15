@@ -1,9 +1,17 @@
 import express from 'express';
 import cors from 'cors';
+import path from 'path';
+import { fileURLToPath } from 'url';
 import config from './core/config.js';
 import logger from './core/logger.js';
 import diagnosticAgent from './agents/diagnosticAgent.js';
 import vehicleSimulator from './simulation/vehicleSimulator.js';
+import paymentRoutes from './routes/payment-routes.js';
+import legalMiddleware from './middleware/legal-acceptance.js';
+import { generateSampleAnalysis, getDiagnosticExamples } from './diagnostics/sample-diagnostic.js';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 
@@ -11,6 +19,12 @@ const app = express();
 app.use(cors({ origin: config.security.corsOrigin }));
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true }));
+
+// Serve static files from public directory
+app.use(express.static(path.join(__dirname, '../public')));
+
+// Serve legal documents
+app.use(express.static(path.join(__dirname, '..')));
 
 // Request logging
 app.use((req, res, next) => {
@@ -32,7 +46,110 @@ app.get('/health', (req, res) => {
   });
 });
 
+// Home page redirect
+app.get('/', (req, res) => {
+  res.redirect('/pricing.html');
+});
+
+// Payment Routes
+app.use('/api/payment', paymentRoutes);
+
+// Legal acceptance routes
+app.post('/api/legal/accept', (req, res) => {
+  try {
+    const { documents, timestamp, ipAddress, userAgent: reqUserAgent } = req.body;
+    const userId = req.headers['x-user-id'] || 'anonymous';
+    const userAgent = reqUserAgent || req.headers['user-agent'];
+    const ip = ipAddress || req.ip;
+
+    const result = legalMiddleware.recordLegalAcceptance(
+      userId,
+      documents,
+      ip,
+      userAgent
+    );
+
+    res.json(result);
+  } catch (error) {
+    logger.error('Legal acceptance recording failed', { error: error.message });
+    res.status(500).json({ 
+      error: 'Failed to record acceptance', 
+      details: error.message 
+    });
+  }
+});
+
+app.get('/api/legal/status', (req, res) => {
+  try {
+    const userId = req.headers['x-user-id'] || req.query.userId || 'anonymous';
+    const userType = req.query.userType || 'user';
+
+    const status = legalMiddleware.checkLegalAcceptance(userId, userType);
+    res.json(status);
+  } catch (error) {
+    logger.error('Legal status check failed', { error: error.message });
+    res.status(500).json({ 
+      error: 'Failed to check legal status', 
+      details: error.message 
+    });
+  }
+});
+
+app.get('/api/legal/versions', (req, res) => {
+  try {
+    const versions = legalMiddleware.getCurrentLegalVersions();
+    res.json(versions);
+  } catch (error) {
+    logger.error('Legal versions fetch failed', { error: error.message });
+    res.status(500).json({ 
+      error: 'Failed to fetch legal versions', 
+      details: error.message 
+    });
+  }
+});
+
 // API Routes
+
+// Sample diagnostic endpoint
+app.post('/api/v1/diagnostic/sample', async (req, res) => {
+  try {
+    const { dtcCode, vehicleInfo, symptoms } = req.body;
+
+    if (!dtcCode) {
+      return res.status(400).json({ error: 'DTC code is required' });
+    }
+
+    logger.diagnostic('Sample diagnostic requested', { dtcCode, vehicleInfo });
+
+    const result = await generateSampleAnalysis({
+      dtcCode,
+      vehicleInfo: vehicleInfo || { make: 'Generic', model: 'Vehicle', year: 2020 },
+      symptoms: symptoms || [],
+    });
+
+    res.json(result);
+  } catch (error) {
+    logger.error('Sample diagnostic failed', { error: error.message });
+    res.status(500).json({ 
+      error: 'Sample diagnostic analysis failed', 
+      details: error.message 
+    });
+  }
+});
+
+// Get diagnostic examples
+app.get('/api/v1/diagnostic/examples', (req, res) => {
+  try {
+    const examples = getDiagnosticExamples();
+    res.json({ success: true, data: examples });
+  } catch (error) {
+    logger.error('Failed to fetch examples', { error: error.message });
+    res.status(500).json({ 
+      error: 'Failed to fetch diagnostic examples', 
+      details: error.message 
+    });
+  }
+});
 
 // Diagnostic analysis endpoint
 app.post('/api/v1/diagnostic/analyze', async (req, res) => {
