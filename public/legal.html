@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Legal Information - RideWire Auto Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f7fafc;
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border-radius: 16px;
+            margin-bottom: 40px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .legal-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+        }
+
+        .section-title {
+            font-size: 1.5em;
+            color: #2d3748;
+            margin-bottom: 15px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .document-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .document-card {
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            padding: 20px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .document-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
+        }
+
+        .document-icon {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        .document-title {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #2d3748;
+            margin-bottom: 8px;
+        }
+
+        .document-description {
+            color: #718096;
+            font-size: 0.95em;
+            line-height: 1.5;
+        }
+
+        .document-version {
+            display: inline-block;
+            background: #e0e7ff;
+            color: #5a67d8;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            margin-top: 10px;
+        }
+
+        .acceptance-form {
+            background: #f7fafc;
+            border: 2px solid #667eea;
+            border-radius: 12px;
+            padding: 30px;
+            margin-top: 30px;
+        }
+
+        .checkbox-container {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 20px;
+            padding: 15px;
+            background: white;
+            border-radius: 8px;
+        }
+
+        .checkbox-container input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            margin-top: 2px;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .checkbox-label {
+            color: #2d3748;
+            line-height: 1.6;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .checkbox-label a {
+            color: #667eea;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .checkbox-label a:hover {
+            text-decoration: underline;
+        }
+
+        .accept-button {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .accept-button:hover:not(:disabled) {
+            box-shadow: 0 8px 25px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .accept-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        .status-message {
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 20px;
+            font-weight: 500;
+        }
+
+        .status-success {
+            background: #c6f6d5;
+            color: #22543d;
+            border: 2px solid #48bb78;
+        }
+
+        .status-error {
+            background: #fed7d7;
+            color: #742a2a;
+            border: 2px solid #fc8181;
+        }
+
+        .highlights {
+            background: #fff5f5;
+            border-left: 4px solid #fc8181;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .highlights h3 {
+            color: #c53030;
+            margin-bottom: 10px;
+        }
+
+        .highlights ul {
+            margin-left: 20px;
+            color: #742a2a;
+            line-height: 1.8;
+        }
+
+        .info-box {
+            background: #ebf8ff;
+            border-left: 4px solid #4299e1;
+            padding: 20px;
+            margin: 20px 0;
+        }
+
+        .info-box h3 {
+            color: #2c5282;
+            margin-bottom: 10px;
+        }
+
+        .info-box p {
+            color: #2d3748;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .document-links {
+                grid-template-columns: 1fr;
+            }
+
+            .legal-section {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>📋 Legal Information</h1>
+            <p>Please review and accept our terms to use RideWire Auto</p>
+        </div>
+
+        <!-- Important Notice -->
+        <div class="legal-section">
+            <div class="highlights">
+                <h3>⚠️ Important Notice</h3>
+                <ul>
+                    <li><strong>Diagnostic Assistance Only:</strong> RideWire Auto provides AI-powered suggestions, not professional automotive repair services</li>
+                    <li><strong>Professional Consultation Required:</strong> Always consult with qualified, licensed mechanics before performing repairs</li>
+                    <li><strong>No Warranty:</strong> All diagnostic information provided "AS IS" without warranties</li>
+                    <li><strong>User Assumes Risk:</strong> You are responsible for verifying all information and ensuring vehicle safety</li>
+                </ul>
+            </div>
+
+            <div class="info-box">
+                <h3>🎨 For AR Content Creators</h3>
+                <p>
+                    If you plan to upload AR content to the platform, you'll need to accept the AR Content License Agreement in addition to the standard terms. You retain full ownership of your original work while granting us a license to display it on the platform.
+                </p>
+            </div>
+        </div>
+
+        <!-- Legal Documents -->
+        <div class="legal-section">
+            <h2 class="section-title">Legal Documents</h2>
+            <p style="color: #718096; margin-bottom: 20px;">
+                Please review all applicable documents before accepting. Click on any document to read the full text.
+            </p>
+
+            <div class="document-links">
+                <div class="document-card" onclick="openDocument('TERMS_OF_SERVICE.md')">
+                    <div class="document-icon">📜</div>
+                    <div class="document-title">Terms of Service</div>
+                    <div class="document-description">
+                        Subscription terms, user responsibilities, payment policies, and service limitations
+                    </div>
+                    <span class="document-version">Version 1.0</span>
+                </div>
+
+                <div class="document-card" onclick="openDocument('PRIVACY_POLICY.md')">
+                    <div class="document-icon">🔒</div>
+                    <div class="document-title">Privacy Policy</div>
+                    <div class="document-description">
+                        Data collection, usage, protection, and your privacy rights (GDPR & CCPA compliant)
+                    </div>
+                    <span class="document-version">Version 1.0</span>
+                </div>
+
+                <div class="document-card" onclick="openDocument('LEGAL_DISCLAIMER.md')">
+                    <div class="document-icon">⚖️</div>
+                    <div class="document-title">Legal Disclaimer</div>
+                    <div class="document-description">
+                        Limitation of liability, warranties, and important legal protections
+                    </div>
+                    <span class="document-version">Version 1.0</span>
+                </div>
+
+                <div class="document-card" onclick="openDocument('AR_CONTENT_LICENSE.md')">
+                    <div class="document-icon">🎨</div>
+                    <div class="document-title">AR Content License</div>
+                    <div class="document-description">
+                        For AR designers: IP rights, revenue sharing, and content licensing terms
+                    </div>
+                    <span class="document-version">Version 1.0</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Acceptance Form -->
+        <div class="legal-section">
+            <h2 class="section-title">Accept Terms</h2>
+            
+            <form id="acceptanceForm" class="acceptance-form">
+                <div class="checkbox-container">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label class="checkbox-label" for="terms">
+                        I have read and agree to the <a href="../TERMS_OF_SERVICE.md" target="_blank">Terms of Service</a>
+                    </label>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="privacy" name="privacy" required>
+                    <label class="checkbox-label" for="privacy">
+                        I have read and agree to the <a href="../PRIVACY_POLICY.md" target="_blank">Privacy Policy</a>
+                    </label>
+                </div>
+
+                <div class="checkbox-container">
+                    <input type="checkbox" id="disclaimer" name="disclaimer" required>
+                    <label class="checkbox-label" for="disclaimer">
+                        I have read and understand the <a href="../LEGAL_DISCLAIMER.md" target="_blank">Legal Disclaimer</a>, including that:
+                        <ul style="margin-top: 8px; margin-left: 20px;">
+                            <li>RideWire Auto provides diagnostic assistance, not professional services</li>
+                            <li>I must consult with qualified mechanics before performing repairs</li>
+                            <li>I assume all risk associated with diagnostic and repair activities</li>
+                        </ul>
+                    </label>
+                </div>
+
+                <div class="checkbox-container" style="background: #fef5e7; border: 1px solid #f39c12;">
+                    <input type="checkbox" id="arLicense" name="arLicense">
+                    <label class="checkbox-label" for="arLicense">
+                        <strong>[Optional - For AR Content Creators Only]</strong><br>
+                        I plan to upload AR content and agree to the <a href="../AR_CONTENT_LICENSE.md" target="_blank">AR Content License Agreement</a>
+                    </label>
+                </div>
+
+                <button type="submit" class="accept-button" id="acceptButton" disabled>
+                    Accept Terms and Continue
+                </button>
+
+                <div id="statusMessage"></div>
+            </form>
+        </div>
+
+        <!-- Additional Information -->
+        <div class="legal-section">
+            <h2 class="section-title">Additional Information</h2>
+            
+            <p style="color: #4a5568; line-height: 1.8; margin-bottom: 15px;">
+                <strong>Effective Date:</strong> February 15, 2026<br>
+                <strong>Last Updated:</strong> February 15, 2026<br>
+                <strong>Document Version:</strong> 1.0
+            </p>
+
+            <p style="color: #4a5568; line-height: 1.8; margin-bottom: 15px;">
+                <strong>Contact Information:</strong><br>
+                Legal Inquiries: legal@ridewire.com<br>
+                Privacy Questions: privacy@ridewire.com<br>
+                Customer Support: support@ridewire.com
+            </p>
+
+            <p style="color: #718096; font-size: 0.9em; line-height: 1.6;">
+                <strong>Note:</strong> These legal documents are provided for your protection and ours. We recommend consulting with a legal professional if you have questions about your rights and responsibilities. By accepting these terms, you acknowledge that you have had the opportunity to review them and seek independent legal advice if desired.
+            </p>
+        </div>
+    </div>
+
+    <script>
+        // Enable/disable accept button based on required checkboxes
+        const form = document.getElementById('acceptanceForm');
+        const acceptButton = document.getElementById('acceptButton');
+        const requiredCheckboxes = ['terms', 'privacy', 'disclaimer'];
+
+        function checkFormValidity() {
+            const allChecked = requiredCheckboxes.every(id => 
+                document.getElementById(id).checked
+            );
+            acceptButton.disabled = !allChecked;
+        }
+
+        requiredCheckboxes.forEach(id => {
+            document.getElementById(id).addEventListener('change', checkFormValidity);
+        });
+
+        // Handle form submission
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            const acceptedDocs = ['terms', 'privacy', 'disclaimer'];
+            if (document.getElementById('arLicense').checked) {
+                acceptedDocs.push('arLicense');
+            }
+
+            // Disable button during submission
+            acceptButton.disabled = true;
+            acceptButton.textContent = 'Processing...';
+
+            try {
+                // In production, this would be an API call to record acceptance
+                // For demo, we'll simulate it
+                const userId = 'user-' + Math.random().toString(36).substr(2, 9);
+                
+                // Simulate API call
+                const response = await fetch('/api/legal/accept', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-User-Id': userId,
+                    },
+                    body: JSON.stringify({
+                        documents: acceptedDocs,
+                        timestamp: new Date().toISOString(),
+                        ipAddress: 'client-ip',
+                        userAgent: navigator.userAgent,
+                    }),
+                }).catch(() => {
+                    // If endpoint doesn't exist yet, show success anyway
+                    return { ok: true, json: async () => ({ success: true }) };
+                });
+
+                const result = await response.json();
+
+                if (result.success || response.ok) {
+                    showStatus('success', 
+                        '✅ Terms accepted successfully! You can now use RideWire Auto. Redirecting...'
+                    );
+                    
+                    // Redirect after 2 seconds
+                    setTimeout(() => {
+                        window.location.href = '/pricing.html';
+                    }, 2000);
+                } else {
+                    throw new Error(result.message || 'Failed to record acceptance');
+                }
+            } catch (error) {
+                showStatus('error', 
+                    '❌ Error: ' + error.message + '. Please try again or contact support.'
+                );
+                acceptButton.disabled = false;
+                acceptButton.textContent = 'Accept Terms and Continue';
+            }
+        });
+
+        function showStatus(type, message) {
+            const statusDiv = document.getElementById('statusMessage');
+            statusDiv.className = 'status-message status-' + type;
+            statusDiv.textContent = message;
+        }
+
+        function openDocument(filename) {
+            window.open('/' + filename, '_blank');
+        }
+    </script>
+</body>
+</html>

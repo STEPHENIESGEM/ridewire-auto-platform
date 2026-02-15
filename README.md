@@ -37,6 +37,7 @@ RideWire Auto Platform is an intelligent automotive diagnostic system that combi
 - npm or yarn
 - MongoDB (for data persistence)
 - API keys for AI services (OpenAI, Anthropic, etc.)
+- Stripe account (for payment processing)
 
 ### Installation
 
@@ -56,11 +57,159 @@ cp .env.example .env
 npm start
 ```
 
-### Development Mode
+## 💳 Stripe Payment Setup
+
+RideWire Auto uses Stripe for secure payment processing and subscription management.
+
+### 1. Create a Stripe Account
+
+1. Sign up at [https://stripe.com](https://stripe.com)
+2. Complete account verification
+3. Navigate to the Developers section in your dashboard
+
+### 2. Get Your API Keys
+
+**Test Mode (Development):**
+1. Go to Developers → API Keys
+2. Copy your **Publishable key** (starts with `pk_test_`)
+3. Copy your **Secret key** (starts with `sk_test_`)
+
+**Live Mode (Production):**
+1. Switch to "Live mode" in the Stripe dashboard
+2. Copy your **Publishable key** (starts with `pk_live_`)
+3. Copy your **Secret key** (starts with `sk_live_`)
+
+### 3. Create Subscription Products
+
+1. Go to Products → Add Product
+2. Create three subscription products:
+   - **Basic**: $99/month - 50 diagnostics per month
+   - **Pro**: $199/month - 200 diagnostics per month
+   - **Enterprise**: $499/month - Unlimited diagnostics
+
+3. For each product, note the **Price ID** (starts with `price_`)
+
+### 4. Set Up Webhooks
+
+1. Go to Developers → Webhooks → Add endpoint
+2. Endpoint URL: `https://your-domain.com/api/payment/webhook`
+3. Select events to listen to:
+   - `checkout.session.completed`
+   - `customer.subscription.created`
+   - `customer.subscription.updated`
+   - `customer.subscription.deleted`
+   - `invoice.payment_succeeded`
+   - `invoice.payment_failed`
+4. Copy the **Webhook signing secret** (starts with `whsec_`)
+
+### 5. Configure Environment Variables
+
+Add to your `.env` file:
+
+```env
+# Stripe Configuration
+STRIPE_PUBLIC_KEY=pk_test_your_stripe_public_key_here
+STRIPE_SECRET_KEY=sk_test_your_stripe_secret_key_here
+STRIPE_WEBHOOK_SECRET=whsec_your_stripe_webhook_secret_here
+
+# Subscription Plans
+STRIPE_PRICE_ID_BASIC=price_your_basic_price_id
+STRIPE_PRICE_ID_PRO=price_your_pro_price_id
+STRIPE_PRICE_ID_ENTERPRISE=price_your_enterprise_price_id
+```
+
+### 6. Test the Integration
 
 ```bash
-npm run dev
+# Start the server
+npm start
+
+# Visit the pricing page
+# http://localhost:3000/pricing.html
+
+# Test checkout with Stripe test cards:
+# Success: 4242 4242 4242 4242
+# Declined: 4000 0000 0000 0002
 ```
+
+---
+
+## 📋 Launch Checklist
+
+Before launching RideWire Auto to production, complete this checklist:
+
+### Legal & Compliance
+- [ ] Have legal documents reviewed by an attorney
+- [ ] Customize legal documents with your business information
+- [ ] Verify GDPR compliance for EU customers
+- [ ] Verify CCPA compliance for California customers
+- [ ] Set up privacy policy monitoring and updates
+- [ ] Configure cookie consent banners (if required)
+- [ ] Review AR content licensing terms
+
+### Stripe & Payments
+- [ ] Switch Stripe from test mode to live mode
+- [ ] Update live API keys in production environment
+- [ ] Test live payment flow with real card
+- [ ] Set up webhook endpoints in production
+- [ ] Configure email receipts in Stripe dashboard
+- [ ] Set up failed payment retry logic
+- [ ] Configure subscription renewal notifications
+- [ ] Test cancellation and refund processes
+
+### Security
+- [ ] Enable HTTPS/SSL on your domain
+- [ ] Set strong JWT_SECRET in production
+- [ ] Enable two-factor authentication for admin accounts
+- [ ] Implement rate limiting on API endpoints (especially payment routes)
+  - Install: `npm install express-rate-limit`
+  - Apply to payment routes to prevent abuse
+- [ ] Configure rate limiting on API endpoints
+- [ ] Set up security headers (helmet.js)
+- [ ] Enable CORS only for your domains
+- [ ] Review and test webhook signature verification
+- [ ] Set up logging and monitoring
+- [ ] Configure backup and disaster recovery
+
+### Features & Content
+- [ ] Test all diagnostic features thoroughly
+- [ ] Verify AI model integrations work correctly
+- [ ] Test AR visualization on multiple devices
+- [ ] Upload initial AR content library
+- [ ] Test demo page with real diagnostic codes
+- [ ] Verify pricing page displays correctly
+- [ ] Test all three subscription tiers
+- [ ] Ensure mobile responsiveness
+
+### Technical
+- [ ] Set up production database (MongoDB)
+- [ ] Configure Redis for session management (optional)
+- [ ] Set up CDN for static assets
+- [ ] Configure auto-scaling (if needed)
+- [ ] Set up monitoring (DataDog, New Relic, etc.)
+- [ ] Configure error tracking (Sentry, Rollbar, etc.)
+- [ ] Set up uptime monitoring
+- [ ] Configure backup schedules
+- [ ] Test load handling and performance
+
+### Marketing & Support
+- [ ] Set up customer support email (support@ridewire.com)
+- [ ] Configure support ticket system
+- [ ] Create onboarding email sequence
+- [ ] Set up analytics (Google Analytics, Mixpanel, etc.)
+- [ ] Create social media accounts
+- [ ] Prepare launch announcement
+- [ ] Set up customer feedback collection
+
+### Post-Launch
+- [ ] Monitor error logs daily for first week
+- [ ] Track conversion rates and user feedback
+- [ ] Test payment processing regularly
+- [ ] Monitor AI model performance
+- [ ] Respond to support requests promptly
+- [ ] Iterate based on user feedback
+
+---
 
 ## 📁 Project Structure
 
@@ -70,26 +219,122 @@ ridewire-auto-platform/
 │   ├── agents/
 │   │   └── diagnosticAgent.js    # AI diagnostic engine
 │   ├── core/
-│   │   └── logger.js             # Winston logging system
+│   │   ├── config.js              # Configuration management
+│   │   └── logger.js              # Winston logging system
+│   ├── diagnostics/
+│   │   └── sample-diagnostic.js   # Sample OBD-II diagnostic examples
+│   ├── middleware/
+│   │   └── legal-acceptance.js    # Legal terms acceptance middleware
+│   ├── payments/
+│   │   ├── stripe-service.js      # Stripe integration
+│   │   └── subscription-plans.js  # Subscription plan definitions
+│   ├── routes/
+│   │   └── payment-routes.js      # Payment API endpoints
 │   ├── simulation/
-│   │   └── vehicleSimulator.js   # Vehicle digital twin
+│   │   └── vehicleSimulator.js    # Vehicle digital twin
 │   ├── visualization/
-│   │   └── arEngine.js           # AR visualization engine
-│   ├── config.js                 # Configuration management
-│   └── index.js                  # Express server & API
-├── .env.example                  # Environment template
+│   │   └── arEngine.js            # AR visualization engine
+│   └── index.js                   # Express server & API
+├── public/
+│   ├── demo.html                  # Interactive diagnostic demo
+│   ├── pricing.html               # Pricing page with Stripe checkout
+│   └── legal.html                 # Legal documents and acceptance
+├── docs/
+│   ├── SAMPLE_DIAGNOSTICS.md      # Diagnostic examples and use cases
+│   └── GEMROAD_PRODUCTS.md        # GemRoad integration docs
+├── tests/
+│   └── diagnosticAgent.test.js    # Test suite
+├── LEGAL_DISCLAIMER.md            # Legal disclaimer and limitations
+├── TERMS_OF_SERVICE.md            # Terms of Service
+├── PRIVACY_POLICY.md              # Privacy Policy (GDPR/CCPA)
+├── AR_CONTENT_LICENSE.md          # AR content creator license
+├── .env.example                   # Environment template
 ├── .gitignore
 ├── package.json
-├── GEMROAD_PRODUCTS.md           # GemRoad integration docs
 └── README.md
 ```
 
 ## 🔌 API Endpoints
 
+### Payment & Subscription
+
+#### GET /api/payment/plans
+Get all available subscription plans
+
+#### GET /api/payment/plans/:planId
+Get specific plan details (basic, pro, enterprise)
+
+#### POST /api/payment/checkout
+Create a Stripe checkout session
+```json
+{
+  "planId": "basic",
+  "customerEmail": "user@example.com",
+  "userId": "user123"
+}
+```
+
+#### POST /api/payment/webhook
+Handle Stripe webhook events (webhook signature required)
+
+#### GET /api/payment/subscription/:subscriptionId
+Get subscription status
+
+#### POST /api/payment/subscription/:subscriptionId/cancel
+Cancel a subscription
+```json
+{
+  "immediate": false,
+  "reason": "No longer needed"
+}
+```
+
+#### POST /api/payment/subscription/:subscriptionId/update
+Update subscription (upgrade/downgrade)
+```json
+{
+  "planId": "pro"
+}
+```
+
+### Legal & Compliance
+
+#### GET /api/legal/versions
+Get current legal document versions
+
+#### GET /api/legal/status
+Check user's legal acceptance status (requires X-User-Id header)
+
+#### POST /api/legal/accept
+Record user acceptance of legal terms
+```json
+{
+  "documents": ["terms", "privacy", "disclaimer"],
+  "timestamp": "2026-02-15T09:30:00Z"
+}
+```
+
 ### Diagnostics
 
-#### POST /api/diagnostics/analyze
-Analyze vehicle diagnostic data
+#### POST /api/v1/diagnostic/sample
+Get sample diagnostic analysis (demo feature)
+```json
+{
+  "dtcCode": "P0300",
+  "vehicleInfo": {
+    "make": "Toyota",
+    "model": "Camry",
+    "year": 2020
+  },
+  "symptoms": ["Rough idle", "Check engine light"]
+}
+```
+
+#### GET /api/v1/diagnostic/examples
+Get list of diagnostic examples
+
+#### POST /api/v1/diagnostic/analyze
+Analyze vehicle diagnostic data (requires subscription)
 
 ```json
 {

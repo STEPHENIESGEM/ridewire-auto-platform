@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pricing - RideWire Auto Platform</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 40px 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            text-align: center;
+            color: white;
+            margin-bottom: 60px;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            font-weight: 700;
+        }
+
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+
+        .pricing-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+
+        .pricing-card {
+            background: white;
+            border-radius: 16px;
+            padding: 40px 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.4);
+        }
+
+        .pricing-card.featured {
+            border: 3px solid #667eea;
+        }
+
+        .pricing-card.featured::before {
+            content: "MOST POPULAR";
+            position: absolute;
+            top: -15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 0.75em;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+
+        .plan-name {
+            font-size: 2em;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .plan-price {
+            font-size: 3em;
+            font-weight: 800;
+            color: #667eea;
+            margin-bottom: 5px;
+        }
+
+        .plan-price span {
+            font-size: 0.4em;
+            color: #718096;
+            font-weight: 400;
+        }
+
+        .plan-description {
+            color: #718096;
+            margin-bottom: 30px;
+            font-size: 1.1em;
+        }
+
+        .features-list {
+            list-style: none;
+            margin-bottom: 30px;
+        }
+
+        .features-list li {
+            padding: 12px 0;
+            color: #4a5568;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .features-list li:last-child {
+            border-bottom: none;
+        }
+
+        .features-list li::before {
+            content: "✓";
+            color: #48bb78;
+            font-weight: bold;
+            margin-right: 12px;
+            font-size: 1.3em;
+        }
+
+        .cta-button {
+            width: 100%;
+            padding: 16px;
+            font-size: 1.1em;
+            font-weight: 600;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .cta-button.primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .cta-button.primary:hover {
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .cta-button.secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .cta-button.secondary:hover {
+            background: #667eea;
+            color: white;
+        }
+
+        .features-section {
+            background: white;
+            border-radius: 16px;
+            padding: 50px;
+            margin-top: 60px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
+        }
+
+        .features-section h2 {
+            text-align: center;
+            font-size: 2.5em;
+            color: #2d3748;
+            margin-bottom: 40px;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .feature-item {
+            text-align: center;
+            padding: 20px;
+        }
+
+        .feature-icon {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .feature-item h3 {
+            font-size: 1.3em;
+            color: #2d3748;
+            margin-bottom: 10px;
+        }
+
+        .feature-item p {
+            color: #718096;
+            line-height: 1.6;
+        }
+
+        .guarantee {
+            text-align: center;
+            color: white;
+            margin-top: 40px;
+            font-size: 1.2em;
+        }
+
+        .guarantee strong {
+            color: #ffd700;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2em;
+            }
+
+            .header p {
+                font-size: 1em;
+            }
+
+            .pricing-cards {
+                grid-template-columns: 1fr;
+            }
+
+            .features-section {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🚗 Choose Your Plan</h1>
+            <p>AI-Powered Vehicle Diagnostics for Automotive Professionals</p>
+        </div>
+
+        <div class="pricing-cards">
+            <!-- Basic Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Basic</div>
+                <div class="plan-price">$99<span>/month</span></div>
+                <div class="plan-description">Perfect for independent mechanics</div>
+                <ul class="features-list">
+                    <li>50 diagnostics per month</li>
+                    <li>AI-powered analysis</li>
+                    <li>Basic AR visualization</li>
+                    <li>Email support</li>
+                    <li>Access to diagnostic library</li>
+                </ul>
+                <button class="cta-button secondary" onclick="selectPlan('basic')">Get Started</button>
+            </div>
+
+            <!-- Pro Plan (Featured) -->
+            <div class="pricing-card featured">
+                <div class="plan-name">Pro</div>
+                <div class="plan-price">$199<span>/month</span></div>
+                <div class="plan-description">Best for growing auto shops</div>
+                <ul class="features-list">
+                    <li>200 diagnostics per month</li>
+                    <li>Multi-model AI consensus</li>
+                    <li>Full AR visualization suite</li>
+                    <li>Priority email & chat support</li>
+                    <li>Custom diagnostic templates</li>
+                    <li>API access (1000 calls/month)</li>
+                    <li>Advanced cost estimates</li>
+                </ul>
+                <button class="cta-button primary" onclick="selectPlan('pro')">Get Started</button>
+            </div>
+
+            <!-- Enterprise Plan -->
+            <div class="pricing-card">
+                <div class="plan-name">Enterprise</div>
+                <div class="plan-price">$499<span>/month</span></div>
+                <div class="plan-description">For large dealerships & fleets</div>
+                <ul class="features-list">
+                    <li>Unlimited diagnostics</li>
+                    <li>Full AI model consensus</li>
+                    <li>Complete AR toolkit</li>
+                    <li>24/7 priority support</li>
+                    <li>Custom integrations</li>
+                    <li>Unlimited API access</li>
+                    <li>White-label options</li>
+                    <li>Dedicated account manager</li>
+                    <li>Fleet management tools</li>
+                </ul>
+                <button class="cta-button secondary" onclick="selectPlan('enterprise')">Get Started</button>
+            </div>
+        </div>
+
+        <div class="features-section">
+            <h2>Why Choose RideWire Auto?</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">🤖</div>
+                    <h3>AI-Powered</h3>
+                    <p>Multiple AI models analyze each diagnostic for accurate results</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🥽</div>
+                    <h3>AR Visualization</h3>
+                    <p>See issues in augmented reality for better understanding</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Fast Results</h3>
+                    <p>Get comprehensive diagnostics in seconds, not hours</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">💰</div>
+                    <h3>Cost Estimates</h3>
+                    <p>Accurate repair cost predictions help you quote confidently</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🔧</div>
+                    <h3>Repair Guides</h3>
+                    <p>Step-by-step repair instructions for every issue</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📊</div>
+                    <h3>Analytics</h3>
+                    <p>Track diagnostic trends and optimize your workflow</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="guarantee">
+            <strong>30-Day Money-Back Guarantee</strong><br>
+            Try RideWire Auto risk-free. Cancel anytime.
+        </div>
+    </div>
+
+    <script>
+        function selectPlan(planId) {
+            // Get customer email (in production, this would come from authentication)
+            const customerEmail = prompt('Enter your email address:');
+            
+            if (!customerEmail) {
+                return;
+            }
+
+            // Validate email
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(customerEmail)) {
+                alert('Please enter a valid email address');
+                return;
+            }
+
+            // Create checkout session
+            fetch('/api/payment/checkout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    planId: planId,
+                    customerEmail: customerEmail,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.data.url) {
+                    // Redirect to Stripe checkout
+                    window.location.href = data.data.url;
+                } else {
+                    alert('Failed to create checkout session. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred. Please try again.');
+            });
+        }
+
+        // Load Stripe publishable key from environment
+        // In production, this would be loaded from your backend
+        const stripePublicKey = 'pk_test_your_stripe_public_key_here';
+    </script>
+</body>
+</html>
