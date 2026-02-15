@@ -1,7 +1,7 @@
 # GemRoad Products Integration with RideWire Auto
 
-**Last Updated:** February 9, 2026  
-**Owner:** STEPHENIESGEM  
+**Last Updated:** February 9, 2024  
+**Owner:** RideWire Development Team  
 **Status:** Active Development
 
 ---
@@ -27,7 +27,7 @@ RideWire Auto is the **flagship vertical product** of the GemRoad ecosystem, dem
 
 **Integration Points:**
 - Uses NOVA-AI-Council-Engine for multi-agent consensus
-- Provides diagnostic data to other GemRoad verticals
+- Provides diagnostic data to other GemRoad products
 - Shares customer/tech authentication with GemRoad Hub
 
 ---
@@ -82,7 +82,7 @@ const consensus = await NovaConsensus.evaluate([
 - Shared JWT tokens
 - WebSocket for real-time notifications
 
-**Status:** 🟡 Planned - awaiting GemRoad Hub MVP
+**Status:** 🟡 Planned - awaiting GemRoad Hub MVP release
 
 ---
 
@@ -248,9 +248,10 @@ All GemRoad products use consistent tech:
 ## Contact & Resources
 
 **GemRoad Product Team:**
-- Product Owner: STEPHENIESGEM
+- GitHub Issues: Primary support channel
 - Repository: github.com/STEPHENIESGEM/ridewire-auto-platform
 - NOVA Core: github.com/STEPHENIESGEM/nova-ai-council-engine (Private)
+- Email: support@ridewireai.com
 
 **Documentation:**
 - [RideWire Auto Architecture](./ARCHITECTURE.md)
@@ -258,7 +259,7 @@ All GemRoad products use consistent tech:
 - [API Documentation](./API.md)
 
 **Roadmap Updates:**
-This document is updated quarterly or when major integration milestones are reached.
+This document is maintained by the RideWire Development Team and is updated quarterly or when major integration milestones are reached.
 
 ---
 

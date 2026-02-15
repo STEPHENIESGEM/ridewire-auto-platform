@@ -267,7 +267,7 @@ class AREngine {
   getRepairAnimation(action) {
     const animations = {
       'remove': 'unscrew_fadeout',
-      'install': 'position_screwin',
+      'install': 'position_screw_in',
       'tighten': 'rotate_clockwise',
       'connect': 'plug_insert',
       'disconnect': 'plug_remove',
